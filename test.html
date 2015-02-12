@@ -7,6 +7,8 @@
 
         <link rel="stylesheet" href="http://dashboard.rjmetrics.com/v2/css/common.beta.css?bust=d7c3b3c964957a2a9e8940d1e85426c9" type="text/css" />
 
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 
         <script type="text/javascript">
@@ -27,7 +29,7 @@
                   + '<div><span class="key">'+ spinnakrEvent.key +'</span> in <span class="dimension">'
                   + spinnakrEvent.dimension + '</span></div>'
                   + '<div>' + spinnakrEvent.calculation + '</div>'
-                  + '<div style="text-align: right; font-size: 10px; color: #aaa">'+ spinnakrEvent.created_at +'</div>'
+                  + '<div style="text-align: right; font-size: 10px; color: #aaa">'+ moment(spinnakrEvent.created_at).fromNow() +'</div>'
                   +'</div>');
 
               });
