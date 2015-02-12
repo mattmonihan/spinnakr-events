@@ -12,8 +12,8 @@
           .spinnakr-overlay{
             position: relative;
             top: 47px;
-            /*background: rgba(255,255,255,1);*/
-            background: rgba(0,0,0,.8);
+            background: rgba(255,255,255,1);
+            /*background: rgba(0,0,0,.8);*/
             padding: 15px;
             border: #bbb 1px solid;
             border-right: 0px;
@@ -21,6 +21,13 @@
 
           .spinnakr-payload .alert{
             padding-right: 70px;
+          }
+
+          .spinnakr-payload h4{
+
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 4px;
           }
 
           [class^="spinnakr-event"]{
@@ -50,17 +57,17 @@
             font-weight: 300;
             margin-top: 0px;
             margin-bottom: 0px;
-            /*background: url('./spinnakr-logo.png') no-repeat; */
-            background: url('./logo-home.png') no-repeat;
+            background: url('./spinnakr-logo.png') no-repeat;
+            /*background: url('./logo-home.png') no-repeat;*/
             background-size: 82px auto;
             width: 85px;
             height: 25px;
-            color: #fff;
+            color: #111;
 
           }
 
           .spinnakr-branding:hover{
-              color: #eee;
+              color: #444;
           }
 
           .spinnakr-branding:before{
@@ -109,8 +116,13 @@
               }
 
 
+              if(spinnakrEvent.calculation[0] == "sum" && spinnakrEvent.calculation[1] == "max"){
+                prose = 'You have a new all-time ' + high_or_low + ' ' + spinnakrEvent.interval + ' ' + spinnakrEvent.key + ' sales of <strong>$' + spinnakrEvent.value +'</strong>. <em>Threshold: ' + spinnakrEvent.threshold + '</em>';
+              }else{
+                prose = 'You have a new all-time ' + high_or_low + ' ' + spinnakrEvent.interval + ' ' + spinnakrEvent.key + ' sales of <strong>$' + spinnakrEvent.value +'</strong>';
+              }
 
-              prose = 'You have a new all-time ' + high_or_low + ' ' + spinnakrEvent.interval + ' ' + spinnakrEvent.key + ' sales of <strong>$' + spinnakrEvent.value +'</strong>';
+
               return prose;
             }
 
