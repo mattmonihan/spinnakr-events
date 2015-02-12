@@ -7,6 +7,69 @@
 
         <link rel="stylesheet" href="http://dashboard.rjmetrics.com/v2/css/common.beta.css?bust=d7c3b3c964957a2a9e8940d1e85426c9" type="text/css" />
 
+        <style type="text/css">
+
+          .spinnakr-overlay{
+            position: relative;
+            top: 47px;
+            /*background: rgba(255,255,255,1);*/
+            background: rgba(0,0,0,.8);
+            padding: 15px;
+            border: #bbb 1px solid;
+            border-right: 0px;
+          }
+
+          .spinnakr-payload .alert{
+            padding-right: 70px;
+          }
+
+          [class^="spinnakr-event"]{
+            position: relative;
+          }
+
+          .timestamp{
+            position: absolute;
+            right: 10px;
+            top: 5px;
+            text-align: right;
+            font-size: 10px;
+            color: #777;
+          }
+          .trending-up{
+            color: green;
+            font-weight: 500;
+          }
+          .trending-down{
+            color: red;
+            font-weight: 500;
+          }
+
+          .spinnakr-branding{
+            position: relative;
+            font-size: 12px;
+            font-weight: 300;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            /*background: url('./spinnakr-logo.png') no-repeat; */
+            background: url('./logo-home.png') no-repeat;
+            background-size: 82px auto;
+            width: 85px;
+            height: 25px;
+            color: #fff;
+
+          }
+
+          .spinnakr-branding:hover{
+              color: #eee;
+          }
+
+          .spinnakr-branding:before{
+            content: 'Insights from ';
+            position: absolute;
+            left: -80px;
+          }
+        </style>
+
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
@@ -15,15 +78,40 @@
           $(function(){
 
             function getTrendlineProse(spinnakrEvent){
+
+              var direction = "neutral";
+              if(spinnakrEvent.value.slope > 0)
+                direction = "up";
+              else if(spinnakrEvent.value.slope < 0)
+                direction = "down";
+
+              console.log(direction);
+
               var prose = ''
-                + '<div><span class="interval">' + spinnakrEvent.interval + '</span> sales of <span class="key">'+ spinnakrEvent.key +'</span> are trending ' + parseFloat(spinnakrEvent.value.slope).toPrecision(3) + '</div>'
-                + '<div style="text-align: right; font-size: 10px; color: #aaa">'+ moment(spinnakrEvent.created_at).fromNow() +'</div>';
+                + '<h4>Spike in ' + spinnakrEvent.dimension + '</h4>'
+                + '<div><span class="interval" style="text-transform: capitalize;">' + spinnakrEvent.interval + '</span> sales of <span class="key" style="font-weight: 500;">'+ spinnakrEvent.key +'</span> are trending <span class="trending-'+ direction +'">' + direction + ' ' + parseFloat(spinnakrEvent.value.slope).toPrecision(3) + '%</span></div>';
+
 
               return prose;
             }
 
             function getComparatorProse(spinnakrEvent){
-              return "comparator";
+
+              var prose;
+
+              var high_or_low = "high";
+
+
+              if(parseFloat(spinnakrEvent.value) >= parseFloat(spinnakrEvent.threshold)){
+                high_or_low = "high";
+              }else{
+                high_or_low = "low"
+              }
+
+
+
+              prose = 'You have a new all-time ' + high_or_low + ' ' + spinnakrEvent.interval + ' ' + spinnakrEvent.key + ' sales of <strong>$' + spinnakrEvent.value +'</strong>';
+              return prose;
             }
 
 
@@ -35,7 +123,7 @@
               //console.log(data);
 
               $.each(data, function (i, spinnakrEvent) {
-                console.log(spinnakrEvent);
+                //console.log(spinnakrEvent);
                 $('.spinnakr-payload').append('<div class="spinnakr-event-' + i + '"></div>');
                 var markup = $('.spinnakr-event-' + i);
 
@@ -47,7 +135,8 @@
                   prose = getComparatorProse(spinnakrEvent);
                 }
 
-                $(markup).html('<div class="alert alert-neutral">' + prose + '</div>');
+                $(markup).html('<div class="alert alert-neutral"><div class="timestamp">'+ moment(spinnakrEvent.created_at).fromNow() +'</div>' + prose + '</div>'
+                );
 
               });
 
@@ -59,18 +148,19 @@
     </head>
     <body style="background: url('./bg.png');">
 
-      <br><br>
 
-      <div class="pull-right" style="background: rgba(255,255,255,0.8); padding: 15px; border: #ddd 1px solid; border-right: 0px;">
-
-        <div class="row" style="">
-          <div class="span pull-right" style="font-size: 12px; font-weight: 200; margin-top: 0px; margin-bottom: 15px;">Insights from Spinnakr</div>
-        </div>
+      <div class="pull-right spinnakr-overlay">
 
         <div class="row">
 
           <div class="spinnakr-payload span5" style=""></div>
 
+        </div>
+
+        <hr>
+
+        <div class="row" style="">
+          <a href="http://spinnakr.com/" target="_blank" class="span pull-right spinnakr-branding"></a>
         </div>
 
       </div>
