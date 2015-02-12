@@ -14,6 +14,19 @@
         <script type="text/javascript">
           $(function(){
 
+            function getTrendlineProse(spinnakrEvent){
+              var prose = ''
+                + '<div><span class="interval">' + spinnakrEvent.interval + '</span> sales of <span class="key">'+ spinnakrEvent.key +'</span> are trending ' + parseFloat(spinnakrEvent.value.slope).toPrecision(3) + '</div>'
+                + '<div style="text-align: right; font-size: 10px; color: #aaa">'+ moment(spinnakrEvent.created_at).fromNow() +'</div>';
+
+              return prose;
+            }
+
+            function getComparatorProse(spinnakrEvent){
+              return "comparator";
+            }
+
+
             $.get( "http://generic01.spn.ee:4567/api/1.0/events?access_token=28037e39-456d-49e4-998a-17c48ce916aa", function( data ) {
               $( ".result" ).html( data );
               //console.log(data);
@@ -25,10 +38,16 @@
                 console.log(spinnakrEvent);
                 $('.spinnakr-payload').append('<div class="spinnakr-event-' + i + '"></div>');
                 var markup = $('.spinnakr-event-' + i);
-                $(markup).html('<div class="alert alert-neutral">'
-                  + '<div><span class="interval">' + spinnakrEvent.interval + '</span> sales of <span class="key">'+ spinnakrEvent.key +'</span> are trending ' + parseFloat(spinnakrEvent.value.slope).toPrecision(3) + '</div>'
-                  + '<div style="text-align: right; font-size: 10px; color: #aaa">'+ moment(spinnakrEvent.created_at).fromNow() +'</div>'
-                  + '</div>');
+
+                var prose;
+
+                if (spinnakrEvent.event_type == "trendline") {
+                  prose = getTrendlineProse(spinnakrEvent);
+                }else if(spinnakrEvent.event_type == "comparator"){
+                  prose = getComparatorProse(spinnakrEvent);
+                }
+
+                $(markup).html('<div class="alert alert-neutral">' + prose + '</div>');
 
               });
 
@@ -38,15 +57,19 @@
 
 
     </head>
-    <body>
+    <body style="background: url('./bg.png');">
 
-      <br><br><br>
+      <br><br>
 
-      <div class="container">
+      <div class="pull-right" style="background: rgba(255,255,255,0.8); padding: 15px; border: #ddd 1px solid; border-right: 0px;">
+
+        <div class="row" style="">
+          <div class="span pull-right" style="font-size: 12px; font-weight: 200; margin-top: 0px; margin-bottom: 15px;">Insights from Spinnakr</div>
+        </div>
 
         <div class="row">
 
-          <div class="spinnakr-payload span5"></div>
+          <div class="spinnakr-payload span5" style=""></div>
 
         </div>
 
