@@ -26,11 +26,9 @@
                 $('.spinnakr-payload').append('<div class="spinnakr-event-' + i + '"></div>');
                 var markup = $('.spinnakr-event-' + i);
                 $(markup).html('<div class="alert alert-neutral">'
-                  + '<div><span class="key">'+ spinnakrEvent.key +'</span> in <span class="dimension">'
-                  + spinnakrEvent.dimension + '</span></div>'
-                  + '<div>' + spinnakrEvent.calculation + '</div>'
+                  + '<div><span class="interval">' + spinnakrEvent.interval + '</span> sales of <span class="key">'+ spinnakrEvent.key +'</span> are trending ' + parseFloat(spinnakrEvent.value.slope).toPrecision(3) + '</div>'
                   + '<div style="text-align: right; font-size: 10px; color: #aaa">'+ moment(spinnakrEvent.created_at).fromNow() +'</div>'
-                  +'</div>');
+                  + '</div>');
 
               });
 
