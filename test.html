@@ -99,8 +99,7 @@
               console.log(direction);
 
               var prose = ''
-                + '<h4>Spike in ' + spinnakrEvent.dimension + '</h4>'
-                + '<div><span class="interval" style="text-transform: capitalize;">' + spinnakrEvent.interval + '</span> sales of <span class="key" style="font-weight: 500;">'+ spinnakrEvent.key +'</span> are trending <span class="trending-'+ direction +'">' + direction + ' ' + parseFloat(spinnakrEvent.value.slope).toPrecision(3) + '%</span></div>';
+                + '<div><span class="interval" style="text-transform: capitalize;">' + spinnakrEvent.interval + '</span> sales of <span class="key" style="font-weight: 500;">'+ spinnakrEvent.key +'</span> are trending <span class="trending-'+ direction +'">' + direction + ' by <strong>$' + parseFloat(spinnakrEvent.value.slope).toPrecision(4) + '</strong></span>.</div>';
 
 
               return prose;
@@ -121,10 +120,10 @@
 
 
               if(spinnakrEvent.calculation[0] == "sum" && spinnakrEvent.calculation[1] == "max"){
-                prose = 'You have a new all-time ' + high_or_low + ' ' + spinnakrEvent.interval + ' ' + spinnakrEvent.key + ' sales of <strong>$' + spinnakrEvent.value +'</strong>. <em>Threshold: ' + spinnakrEvent.threshold + '</em>';
+                prose = 'You have a new all-time ' + high_or_low + ' ' + spinnakrEvent.interval + ' ' + spinnakrEvent.key + ' sales of <strong>$' + spinnakrEvent.value +'</strong>.';
               }else{
-                prose = 'You have a new all-time ' + high_or_low + ' ' + spinnakrEvent.interval + ' ' + spinnakrEvent.key + ' sales of <strong>$' + spinnakrEvent.value +'</strong>';
-              }
+                prose = 'You have a spike in ' +  spinnakrEvent.key + ' orders! You have <strong>$' + spinnakrEvent.value +' orders</strong> so far today.';
+            }
 
 
               return prose;
